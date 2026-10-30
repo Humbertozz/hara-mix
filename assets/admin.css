@@ -1,0 +1,52 @@
+/* ---- painel da equipe ---- */
+.muted{color:var(--muted);line-height:1.6;margin:0}
+.center-v{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding-block:32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.center-v[hidden]{display:none}
+.login-card{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:26px 22px;border:1px solid var(--line);border-radius:18px;background:rgba(46,36,26,.7)}
+.login-card .logo{width:180px}
+.login-card h1{margin:0;font:400 1.5rem/1.2 var(--display)}
+.lg-form{width:100%;display:flex;flex-direction:column;gap:14px;text-align:left}
+.lg-form[hidden]{display:none}
+.lg-form h1{text-align:center}
+.a-save.big{width:100%;padding:15px;font-size:.84rem}
+.a-save:disabled{opacity:.6}
+.link-btn{background:none;border:0;color:var(--gold-hi);font:400 .9rem var(--body);cursor:pointer;padding:6px;text-decoration:underline;text-underline-offset:3px}
+.pw-wrap{position:relative;display:block}
+.pw-wrap input{padding-right:78px!important}
+.pw-eye{position:absolute;right:6px;top:50%;translate:0 -50%;font:500 .7rem/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--gold-hi);background:rgba(214,170,110,.1);border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer}
+.ok-msg{margin:0;color:var(--wa);font-size:.9rem;line-height:1.5}
+.ok-box{border:1px solid rgba(79,208,122,.4);background:rgba(79,208,122,.07);border-radius:12px;padding:14px;line-height:1.7;font-size:.92rem;overflow-wrap:anywhere}
+.ok-box code{color:var(--gold-hi);font-size:.9em}
+.ok-box[hidden]{display:none}
+.lock-ic{width:42px;height:42px;color:var(--gold)}
+.back{display:inline-flex;align-items:center;gap:6px;font:500 .72rem/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:8px 0}
+
+/* topo */
+.pn-top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(26,19,13,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.pn-logo{width:84px}
+.user-acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.cr-ghost.sm,.rm.sm{padding:9px 12px;font-size:.68rem;min-height:0}
+@media(max-width:520px){.pn-head{flex-wrap:wrap}.user-acts{width:100%;justify-content:flex-start}.pn-logo{width:64px}}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;font:500 .76rem/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:none;border:0;border-bottom:2px solid transparent;padding:14px 12px;cursor:pointer}
+.tab[aria-pressed="true"]{color:var(--gold-hi);border-bottom-color:var(--gold)}
+.tab:hover{color:var(--ink)}
+.pn-main{padding-bottom:60px}
+.pn-view{align-self:flex-start;font:500 .72rem/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--gold-hi);text-decoration:none}
+
+/* equipe */
+.eq-card{display:flex;flex-direction:column;gap:14px;padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.eq-card h2{margin:0;font:400 1.25rem/1.2 var(--display)}
+.lojas-fs{border:1px solid var(--line);border-radius:10px;padding:10px 12px 12px;display:flex;flex-direction:row;flex-wrap:wrap;gap:16px;margin:0}
+.lojas-fs legend{font:500 .66rem/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);padding:0 6px}
+.eq-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.eq-item{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,236,205,.02)}
+.eq-item.is-off{opacity:.65}
+.eq-who{display:flex;flex-direction:column;gap:3px;min-width:0}
+.eq-who b{font:400 1.05rem var(--display)}
+.eq-who small{color:var(--muted);font-size:.8rem;overflow-wrap:anywhere}
+.eq-ctrl{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eq-note{font-size:.82rem}
+
+.login-card .mark svg{width:200px;height:auto}

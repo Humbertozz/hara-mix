@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Painel da Equipe Harã Mix</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1a130d">
+<link rel="icon" href="../assets/logo-hara.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="../assets/admin.css">
+</head>
+<body>
+
+<!-- ============ CARREGANDO ============ -->
+<div id="v-wait" class="center-v"><p class="muted">Carregando…</p></div>
+
+<!-- ============ LOGIN ============ -->
+<div id="v-login" class="center-v" hidden>
+  <div class="login-card">
+    <div class="mark lg-mark" role="img" aria-label="Harã Mix"><svg viewBox="0 0 300 120" width="220" aria-hidden="true"><defs><linearGradient id="glg-mark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d3a1"/><stop offset=".5" stop-color="#d6aa6e"/><stop offset="1" stop-color="#9b7240"/></linearGradient></defs><rect x="235" y="6" width="22" height="9" rx="2" fill="url(#glg-mark)"/><rect x="239" y="15" width="14" height="6" fill="url(#glg-mark)"/><path d="M200 26h62l26 44-26 44h-62" fill="none" stroke="url(#glg-mark)" stroke-width="3.5"/><text x="8" y="86" font-family="Marcellus, Georgia, serif" font-size="76" fill="url(#glg-mark)">Harã</text><text x="214" y="82" font-family="Jost, sans-serif" font-weight="500" font-size="30" letter-spacing="6" fill="url(#glg-mark)">MIX</text></svg></div>
+    <span class="eyebrow">Área da equipe</span>
+
+    <form id="f-login" class="lg-form" novalidate>
+      <h1>Entrar no painel</h1>
+      <label class="fld"><span>E-mail</span><input id="lg-email" type="email" autocomplete="username" required></label>
+      <label class="fld"><span>Senha</span>
+        <span class="pw-wrap"><input id="lg-senha" type="password" autocomplete="current-password" required><button type="button" class="pw-eye" data-eye="lg-senha" aria-label="Mostrar senha">Ver</button></span>
+      </label>
+      <p class="ed-err" id="lg-err" hidden role="alert"></p>
+      <button class="a-save big" type="submit" id="lg-btn">Entrar</button>
+      <button class="link-btn" type="button" id="lg-esqueci">Esqueci minha senha</button>
+    </form>
+
+    <form id="f-reset" class="lg-form" hidden novalidate>
+      <h1>Recuperar senha</h1>
+      <p class="muted">Digite seu e-mail. Vamos enviar um link para você criar uma senha nova.</p>
+      <label class="fld"><span>E-mail</span><input id="rs-email" type="email" autocomplete="username" required></label>
+      <p class="ed-err" id="rs-err" hidden role="alert"></p>
+      <p class="ok-msg" id="rs-ok" hidden role="status"></p>
+      <button class="a-save big" type="submit" id="rs-btn">Enviar link</button>
+      <button class="link-btn" type="button" id="rs-voltar">Voltar para o login</button>
+    </form>
+
+    <form id="f-nova" class="lg-form" hidden novalidate>
+      <h1>Criar senha nova</h1>
+      <label class="fld"><span>Nova senha (mínimo 8 caracteres)</span><input id="nv-senha" type="password" autocomplete="new-password" minlength="8" required></label>
+      <label class="fld"><span>Repita a senha</span><input id="nv-senha2" type="password" autocomplete="new-password" minlength="8" required></label>
+      <p class="ed-err" id="nv-err" hidden role="alert"></p>
+      <button class="a-save big" type="submit" id="nv-btn">Salvar senha</button>
+    </form>
+  </div>
+  <a class="back" href="../">← Voltar ao site</a>
+</div>
+
+<!-- ============ SEM ACESSO / SEM CONFIG ============ -->
+<div id="v-msg" class="center-v" hidden>
+  <div class="login-card">
+    <svg class="lock-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+    <h1 id="msg-t"></h1>
+    <p class="muted" id="msg-p"></p>
+    <button class="cr-ghost" id="msg-sair" hidden>Sair</button>
+  </div>
+</div>
+
+<!-- ============ PAINEL ============ -->
+<div id="v-app" hidden>
+  <header class="pn-top">
+    <div class="wrap pn-head">
+      <div class="mark pn-mark" role="img" aria-label="Harã Mix"><svg viewBox="0 0 300 120" width="110" aria-hidden="true"><defs><linearGradient id="gpn-mark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d3a1"/><stop offset=".5" stop-color="#d6aa6e"/><stop offset="1" stop-color="#9b7240"/></linearGradient></defs><rect x="235" y="6" width="22" height="9" rx="2" fill="url(#gpn-mark)"/><rect x="239" y="15" width="14" height="6" fill="url(#gpn-mark)"/><path d="M200 26h62l26 44-26 44h-62" fill="none" stroke="url(#gpn-mark)" stroke-width="3.5"/><text x="8" y="86" font-family="Marcellus, Georgia, serif" font-size="76" fill="url(#gpn-mark)">Harã</text><text x="214" y="82" font-family="Jost, sans-serif" font-weight="500" font-size="30" letter-spacing="6" fill="url(#gpn-mark)">MIX</text></svg></div>
+      <div class="pn-title"><span class="eyebrow" id="who-papel">Painel da equipe</span><h1 id="who-nome">Olá</h1></div>
+      <div class="user-acts">
+        <button class="cr-ghost sm" id="btn-senha">Trocar senha</button>
+        <button class="cr-ghost sm" id="btn-sair">Sair</button>
+      </div>
+    </div>
+    <nav class="wrap tabs" id="tabs" aria-label="Seções do painel"></nav>
+  </header>
+
+  <!-- aba de uma loja -->
+  <main id="t-loja" class="wrap pn-main" hidden>
+    <section class="pn-progress" aria-label="Progresso das fotos">
+      <div class="pn-prog-txt"><b id="pn-done">0</b> de <span id="pn-total">0</span> produtos com foto</div>
+      <div class="pn-bar"><i id="pn-fill"></i></div>
+      <p class="pn-hint">As alterações salvam na hora e aparecem para os clientes no catálogo. Toda foto sai quadrada (1000 × 1000 px), enquadrada por você.</p>
+      <a class="pn-view" id="pn-view" href="../" target="_blank" rel="noopener">Abrir catálogo ↗</a>
+    </section>
+    <div class="pn-tools">
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="pn-q" type="search" placeholder="Nome, marca ou código" aria-label="Buscar produto"></label>
+      <div class="pn-row"><div class="chips" id="pn-chips" role="group" aria-label="Filtrar"></div><button class="pn-new" id="pn-new">+ Novo produto</button></div>
+    </div>
+    <ul class="pn-list" id="pn-list"><li class="empty"><strong>Carregando produtos…</strong></li></ul>
+    <button class="more" id="pn-more" hidden></button>
+  </main>
+
+  <!-- aba equipe (só dono) -->
+  <main id="t-equipe" class="wrap pn-main" hidden>
+    <section class="eq-card">
+      <h2>Criar acesso para funcionária</h2>
+      <p class="muted">Ela vai entrar em <b id="eq-url">este painel</b> com o e-mail e a senha que você definir aqui. Depois ela pode trocar a senha.</p>
+      <form id="f-membro" class="ed-form" novalidate>
+        <div class="fld-row">
+          <label class="fld"><span>Nome</span><input id="mb-nome" type="text" autocomplete="off" required></label>
+          <label class="fld"><span>E-mail</span><input id="mb-email" type="email" autocomplete="off" required></label>
+        </div>
+        <label class="fld"><span>Senha provisória (mínimo 8 caracteres)</span>
+          <span class="pw-wrap"><input id="mb-senha" type="text" autocomplete="off" minlength="8" required><button type="button" class="pw-eye" id="mb-gerar">Gerar</button></span>
+        </label>
+        <fieldset class="fld lojas-fs"><legend>Pode editar</legend>
+          <label class="chk"><input type="checkbox" name="mb-loja" value="hara" checked><span>Catálogo Harã</span></label>
+          <label class="chk"><input type="checkbox" name="mb-loja" value="mix" checked><span>Catálogo Harã Mix</span></label>
+        </fieldset>
+        <p class="ed-err" id="mb-err" hidden role="alert"></p>
+        <div class="ok-box" id="mb-ok" hidden role="status"></div>
+        <div class="ed-actions"><button class="a-save" type="submit" id="mb-btn">Criar acesso</button></div>
+      </form>
+    </section>
+    <section class="eq-card">
+      <h2>Equipe</h2>
+      <ul class="eq-list" id="eq-list"><li class="muted">Carregando…</li></ul>
+    </section>
+  </main>
+
+  <!-- editar produto -->
+  <div class="sheet" id="ed" hidden role="dialog" aria-modal="true" aria-labelledby="ed-title">
+    <div class="scrim" data-edclose></div>
+    <div class="panel ed-panel">
+      <button class="close" data-edclose aria-label="Fechar">×</button>
+      <div class="ed-head"><span class="eyebrow" id="ed-sku"></span><h2 id="ed-title">Editar produto</h2></div>
+      <div class="ed-photo" id="ed-photo">
+        <div class="ph" id="ed-ph"></div>
+        <div class="ed-ph-acts">
+          <button type="button" class="upl" id="ed-up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Enviar foto</span></button>
+          <button type="button" class="rm" id="ed-rm" hidden>Remover foto</button>
+        </div>
+      </div>
+      <form class="ed-form" id="ed-form" novalidate>
+        <label class="fld"><span>Nome do produto</span><input id="ed-n" type="text" required autocomplete="off"></label>
+        <div class="fld-row">
+          <label class="fld"><span>Marca</span><input id="ed-b" type="text" list="ed-brands" autocomplete="off"><datalist id="ed-brands"></datalist></label>
+          <label class="fld"><span>Tamanho</span><input id="ed-s" type="text" placeholder="100 ml" autocomplete="off"></label>
+        </div>
+        <div class="fld-row">
+          <label class="fld"><span>Categoria</span><select id="ed-c"></select></label>
+          <label class="fld"><span>Público</span><select id="ed-g"><option value="">Não informar</option><option>Feminino</option><option>Masculino</option><option>Unissex</option><option>Infantil</option></select></label>
+        </div>
+        <label class="fld"><span>Preço (R$)</span><input id="ed-p" type="text" inputmode="decimal" placeholder="Vazio = Sob consulta" autocomplete="off"></label>
+        <label class="fld"><span>Descrição</span><textarea id="ed-d" rows="3" placeholder="Notas, fixação, ocasião de uso…"></textarea></label>
+        <label class="chk"><input type="checkbox" id="ed-vis" checked><span>Mostrar no catálogo para os clientes</span></label>
+        <p class="ed-err" id="ed-err" hidden role="alert"></p>
+        <div class="ed-actions">
+          <button type="button" class="rm" id="ed-del" hidden>Excluir produto</button>
+          <button type="button" class="cr-ghost" data-edclose>Cancelar</button>
+          <button type="submit" class="a-save" id="ed-ok">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- recorte da foto -->
+  <div class="sheet" id="crop" hidden role="dialog" aria-modal="true" aria-labelledby="cr-name">
+    <div class="scrim" data-crclose></div>
+    <div class="panel cr-panel">
+      <button class="close" data-crclose aria-label="Fechar">×</button>
+      <div class="cr-head"><span class="brand" id="cr-brand"></span><h2 id="cr-name"></h2></div>
+      <div class="cr-stage" id="cr-stage">
+        <canvas id="cr-canvas" width="1000" height="1000" aria-label="Pré-visualização da foto"></canvas>
+        <div class="cr-guide" aria-hidden="true"></div>
+        <p class="cr-drag">Arraste para posicionar</p>
+      </div>
+      <div class="cr-ctrl">
+        <div class="cr-row">
+          <span class="cr-l">Zoom</span>
+          <button class="cr-ic" id="cr-zout" aria-label="Diminuir zoom">−</button>
+          <input type="range" id="cr-zoom" min="0" max="1000" value="500" aria-label="Zoom">
+          <button class="cr-ic" id="cr-zin" aria-label="Aumentar zoom">+</button>
+        </div>
+        <div class="cr-row cr-wrap">
+          <span class="cr-l">Encaixe</span>
+          <div class="seg" role="group" aria-label="Encaixe">
+            <button id="cr-cover" aria-pressed="true">Preencher</button>
+            <button id="cr-fit" aria-pressed="false">Foto inteira</button>
+          </div>
+          <button class="cr-ghost" id="cr-rot">Girar 90°</button>
+        </div>
+        <div class="cr-row cr-wrap">
+          <span class="cr-l">Fundo</span>
+          <div class="seg" role="group" aria-label="Cor de fundo" id="cr-bg">
+            <button data-bg="auto" aria-pressed="true">Automático</button>
+            <button data-bg="#ffffff" aria-pressed="false">Branco</button>
+            <button data-bg="#2e241a" aria-pressed="false">Marrom Harã</button>
+          </div>
+        </div>
+      </div>
+      <div class="cr-actions">
+        <button class="cr-ghost" id="cr-other">Trocar imagem</button>
+        <button class="a-save" id="cr-ok">Usar esta foto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- trocar senha -->
+  <div class="sheet" id="pw" hidden role="dialog" aria-modal="true" aria-labelledby="pw-t">
+    <div class="scrim" data-pwclose></div>
+    <div class="panel ed-panel">
+      <button class="close" data-pwclose aria-label="Fechar">×</button>
+      <div class="ed-head"><h2 id="pw-t">Trocar minha senha</h2></div>
+      <form class="ed-form" id="f-pw" novalidate>
+        <label class="fld"><span>Nova senha (mínimo 8 caracteres)</span><input id="pw-1" type="password" autocomplete="new-password" minlength="8" required></label>
+        <label class="fld"><span>Repita a senha</span><input id="pw-2" type="password" autocomplete="new-password" minlength="8" required></label>
+        <p class="ed-err" id="pw-err" hidden role="alert"></p>
+        <div class="ed-actions"><button type="button" class="cr-ghost" data-pwclose>Cancelar</button><button type="submit" class="a-save" id="pw-btn">Salvar senha</button></div>
+      </form>
+    </div>
+  </div>
+
+  <input type="file" id="file" accept="image/*" hidden>
+</div>
+
+<div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="../assets/config.js"></script>
+<script src="../assets/comum.js"></script>
+<script src="../assets/admin.js"></script>
+</body>
+</html>

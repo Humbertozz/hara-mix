@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Catálogo Harã Mix</title>
+<meta name="description" content="Perfumes Paris Elysees, deo colônias e linha corpo Ciclo. Toque em um produto para pedir pelo WhatsApp.">
+<meta name="theme-color" content="#1a130d">
+<link rel="icon" href="assets/logo-hara.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="assets/base.css">
+</head>
+<body data-loja="mix">
+<nav class="wrap top-nav"><a class="back" href="https://humbertozz.github.io/hara-arabe/">← Todos os links</a></nav>
+<header class="hero wrap">
+  <div class="mark" role="img" aria-label="Harã Mix"><svg viewBox="0 0 300 120" width="260" aria-hidden="true"><defs><linearGradient id="gdm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1d3a1"/><stop offset=".5" stop-color="#d6aa6e"/><stop offset="1" stop-color="#9b7240"/></linearGradient></defs><rect x="235" y="6" width="22" height="9" rx="2" fill="url(#gdm)"/><rect x="239" y="15" width="14" height="6" fill="url(#gdm)"/><path d="M200 26h62l26 44-26 44h-62" fill="none" stroke="url(#gdm)" stroke-width="3.5"/><text x="8" y="86" font-family="Marcellus, Georgia, serif" font-size="76" fill="url(#gdm)">Harã</text><text x="214" y="82" font-family="Jost, sans-serif" font-weight="500" font-size="30" letter-spacing="6" fill="url(#gdm)">MIX</text></svg></div>
+  <h1>Catálogo Harã Mix</h1>
+  <p>Perfumes Paris Elysees, deo colônias e linha corpo Ciclo. Toque em um produto para pedir pelo WhatsApp.</p>
+</header>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="row">
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Buscar perfume ou marca" aria-label="Buscar perfume ou marca"></label>
+      <select id="sort" aria-label="Ordenar"><option value="feat">Destaques</option><option value="az">A–Z</option><option value="lo">Menor preço</option><option value="hi">Maior preço</option></select>
+    </div>
+    <div class="row"><div class="chips" id="chips" role="group" aria-label="Filtrar por categoria"></div></div>
+    <div class="row"><select id="brand" aria-label="Marca" style="max-width:100%;flex:1"><option value="">Todas as marcas</option></select></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="count"><span><b id="n">0</b> produtos</span><span id="range"></span></div>
+  <div class="grid" id="grid"></div>
+  <button class="more" id="more" hidden></button>
+</main>
+<footer class="loja-foot wrap">
+  <p>Harã Mix · Sergipe</p>
+  <a href="admin/" class="adm-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Área da equipe</a>
+</footer>
+
+<div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="s-name">
+  <div class="scrim" data-close></div>
+  <div class="panel">
+    <button class="close" data-close aria-label="Fechar">×</button>
+    <div class="ph" id="s-ph"></div>
+    <div class="info">
+      <span class="brand" id="s-brand"></span>
+      <h2 id="s-name"></h2>
+      <div class="meta" id="s-meta"></div>
+      <span class="price" id="s-price"></span>
+      <p class="desc" id="s-desc"></p>
+      <p class="ask-l">Pedir com</p>
+      <div class="sellers" id="s-sellers"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="assets/config.js"></script>
+<script src="assets/comum.js"></script>
+<script src="assets/loja.js"></script>
+</body>
+</html>
