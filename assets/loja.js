@@ -38,7 +38,7 @@
     const q = norm($("q").value.trim()), br = $("brand").value, s = $("sort").value;
     let L = P.map((p, i) => ({ ...p, idx: i })).filter(p =>
       (cat === "Todos" || p.c === cat) && (!br || p.b === br) && (!q || norm(p.n + " " + p.b).includes(q)));
-    L.sort((a, b) => s === "feat" ? ((!!b.i - !!a.i) || (!!b.p - !!a.p) || a.n.localeCompare(b.n, "pt"))
+    L.sort((a, b) => s === "feat" ? ((b.e - a.e) || (!!b.i - !!a.i) || (!!b.p - !!a.p) || a.n.localeCompare(b.n, "pt"))
       : s === "az" ? a.n.localeCompare(b.n, "pt")
       : s === "lo" ? ((a.p || 1e9) - (b.p || 1e9)) : (b.p - a.p));
     $("n").textContent = L.length;
@@ -46,8 +46,8 @@
     $("range").textContent = pr.length ? brl(Math.min(...pr)) + " – " + brl(Math.max(...pr)) : "";
     const total = L.length; L = L.slice(0, shown);
     $("grid").innerHTML = L.length ? L.map(p => `
-      <button class="card" data-i="${p.idx}" aria-label="${esc(p.n)}">
-        <div class="ph">${H.img(p)}${p.g ? `<span class="tag">${esc(p.g)}</span>` : p.c !== "Perfumes" ? `<span class="tag">${esc(p.c)}</span>` : ""}</div>
+      <button class="card${p.e ? "" : " is-out"}" data-i="${p.idx}" aria-label="${esc(p.n)}${p.e ? "" : " (esgotado)"}">
+        <div class="ph">${H.img(p)}${p.g ? `<span class="tag">${esc(p.g)}</span>` : p.c !== "Perfumes" ? `<span class="tag">${esc(p.c)}</span>` : ""}${p.e ? "" : '<span class="tag out">Esgotado</span>'}</div>
         <div class="body"><span class="brand">${esc(p.b)}</span><span class="name">${esc(p.n)}</span><span class="size">${esc(p.s)}</span>
           <div class="foot"><span class="price${p.p ? "" : " ask"}">${p.p ? brl(p.p) : "Sob consulta"}</span><span class="buy">${H.WA}</span></div></div>
       </button>`).join("")
@@ -65,9 +65,10 @@
     $("s-brand").textContent = p.b; $("s-name").textContent = p.n;
     $("s-meta").innerHTML = [p.c, p.g, p.s].filter(Boolean).map(t => `<span>${esc(t)}</span>`).join("");
     $("s-price").textContent = p.p ? brl(p.p) : "Preço sob consulta"; $("s-price").className = "price" + (p.p ? "" : " ask");
+    $("s-out").hidden = p.e;
     $("s-desc").textContent = p.d || "Fale com uma de nossas consultoras para saber mais sobre as notas, a fixação e a disponibilidade deste produto.";
     $("s-sellers").innerHTML = (CONFIG.vendedoras || []).map(v => {
-      const msg = `Olá, ${v.nome}! Vi no ${CFG.msg} e tenho interesse no ${p.n}${p.b && p.b !== "Outras marcas" ? " (" + p.b + ")" : ""}${p.s ? " " + p.s : ""}${p.p ? " — " + brl(p.p) : ""} [cód. ${p.sku}]. Está disponível?`;
+      const msg = `Olá, ${v.nome}! Vi no ${CFG.msg} e tenho interesse no ${p.n}${p.b && p.b !== "Outras marcas" ? " (" + p.b + ")" : ""}${p.s ? " " + p.s : ""}${p.p ? " — " + brl(p.p) : ""} [cód. ${p.sku}]. ${p.e ? "Está disponível?" : "Vi que está esgotado. Tem previsão de chegada?"}`;
       return `<a class="seller" href="https://wa.me/${v.whatsapp}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener"><span class="mono">${esc(v.nome[0])}</span><span class="who"><b>${esc(v.nome)}</b><small>${esc(v.exibicao)}</small></span>${H.WA}</a>`;
     }).join("");
     $("sheet").hidden = false; document.body.style.overflow = "hidden";

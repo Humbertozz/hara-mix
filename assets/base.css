@@ -1,3 +1,4 @@
+[hidden]{display:none!important}
 
 /* Layout: vitrine em grade (2 col no celular, até 4 no desktop) sob barra de filtros fixa; ficha do perfume abre como gaveta */
 :root{
@@ -233,3 +234,9 @@ input:focus,select:focus{border-color:var(--gold)}
 .empty a{color:var(--gold-hi)}
 .empty code{font-size:.85em;color:var(--gold-hi)}
 @media(prefers-reduced-motion:reduce){.card.sk .ph{animation:none}}
+
+/* estoque */
+.tag.out{left:auto;right:8px;background:#5a2a20;color:#ffd9cf}
+.card.is-out .ph img,.card.is-out .ph .fb{filter:grayscale(.7) brightness(.75)}
+.out-note{margin:0;font-size:.88rem;color:#ffb8a6;background:rgba(231,160,143,.1);border:1px solid rgba(231,160,143,.3);border-radius:10px;padding:10px 12px}
+.out-note[hidden]{display:none}

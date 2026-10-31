@@ -35,14 +35,14 @@ window.H = {
   /* converte a linha do banco para o formato usado na tela */
   doBanco: r => ({
     id: r.id, sku: r.sku, n: r.nome, b: r.marca || "", s: r.tamanho || "", c: r.categoria || "Perfumes",
-    g: r.publico || "", p: Number(r.preco) || 0, d: r.descricao || "", i: r.foto_url || "", h: r.visivel === false
+    g: r.publico || "", p: Number(r.preco) || 0, d: r.descricao || "", i: r.foto_url || "", h: r.visivel === false, e: r.em_estoque !== false
   }),
   /* busca todos os produtos de uma loja, de 1000 em 1000 (limite do Supabase) */
   async produtos(sb, loja, soVisiveis) {
     const out = [];
     for (let de = 0; ; de += 1000) {
       let q = sb.from("catalogo_produtos")
-        .select("id,sku,nome,marca,tamanho,categoria,publico,preco,descricao,foto_url,visivel")
+        .select("id,sku,nome,marca,tamanho,categoria,publico,preco,descricao,foto_url,visivel,em_estoque")
         .eq("loja", loja).order("nome").range(de, de + 999);
       if (soVisiveis) q = q.eq("visivel", true);
       const { data, error } = await q;

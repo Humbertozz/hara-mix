@@ -134,7 +134,7 @@
     $("pn-done").textContent = done; $("pn-total").textContent = P.length;
     $("pn-fill").style.width = (P.length ? done / P.length * 100 : 0).toFixed(1) + "%";
     const F = [["sem", "Sem foto", P.length - done], ["com", "Com foto", done], ["oculto", "Ocultos", P.filter(p => p.h).length],
-               ["preco", "Sem preço", P.filter(p => !p.p).length], ["todos", "Todos", P.length]];
+               ["preco", "Sem preço", P.filter(p => !p.p).length], ["esgotado", "Esgotados", P.filter(p => !p.e).length], ["todos", "Todos", P.length]];
     $("pn-chips").innerHTML = F.map(([k, l, n]) => `<button class="chip" data-f="${k}" aria-pressed="${k === filtro}">${l} <small style="opacity:.7">${n}</small></button>`).join("");
   }
   $("pn-chips").onclick = e => { const b = e.target.closest(".chip"); if (!b) return; filtro = b.dataset.f; mostrar = 60; pnChips(); pnRender(); };
@@ -142,7 +142,7 @@
   $("pn-more").onclick = () => { mostrar += 60; pnRender(); };
   function pnRender() {
     const q = norm($("pn-q").value.trim());
-    let L = P.filter(p => (filtro === "todos" || (filtro === "sem" && !p.i) || (filtro === "com" && p.i) || (filtro === "oculto" && p.h) || (filtro === "preco" && !p.p))
+    let L = P.filter(p => (filtro === "todos" || (filtro === "sem" && !p.i) || (filtro === "com" && p.i) || (filtro === "oculto" && p.h) || (filtro === "preco" && !p.p) || (filtro === "esgotado" && !p.e))
       && (!q || norm(p.n + " " + p.b + " " + p.sku).includes(q)));
     L.sort((a, b) => a.b.localeCompare(b.b, "pt") || a.n.localeCompare(b.n, "pt"));
     const total = L.length; L = L.slice(0, mostrar);
@@ -153,6 +153,7 @@
           <small>${esc([p.s, p.p ? brl(p.p) : "Sob consulta", "cód. " + p.sku].filter(Boolean).join(" · "))}</small>
           <div class="pills">${p.i ? '<span class="pill ok">Com foto</span>' : '<span class="pill">Sem foto</span>'}${p.h ? '<span class="pill off">Oculto</span>' : ""}</div></div>
         <div class="pn-acts">
+          <button class="stk ${p.e ? "on" : "off"}" data-stk="${esc(p.sku)}" aria-pressed="${p.e}" title="Tocar para trocar">${p.e ? "● Em estoque" : "○ Esgotado"}</button>
           <button class="ed-btn" data-ed="${esc(p.sku)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg><span>Editar</span></button>
           <button class="upl" data-up="${esc(p.sku)}">${H.CAM}<span>${p.i ? "Trocar foto" : "Enviar foto"}</span></button>
         </div>
@@ -164,7 +165,17 @@
   $("pn-list").onclick = e => {
     const ed = e.target.closest("[data-ed]"); if (ed) return abrirEd(ed.dataset.ed);
     const up = e.target.closest("[data-up]"); if (up) return escolherFoto(up.dataset.up);
+    const st = e.target.closest("[data-stk]"); if (st) return trocarEstoque(st);
   };
+  async function trocarEstoque(btn) {
+    const p = acha(btn.dataset.stk); if (!p || btn.disabled) return;
+    const novo = !p.e; btn.disabled = true; btn.textContent = "Salvando…";
+    const { data, error } = await sb.from("catalogo_produtos").update({ em_estoque: novo }).eq("loja", LOJA).eq("sku", p.sku).select().single();
+    btn.disabled = false;
+    if (error) { toast(traduz(error)); pnRender(); return; }
+    atualizar(H.doBanco(data));
+    toast(novo ? `${p.n}: em estoque.` : `${p.n}: marcado como esgotado.`, true);
+  }
   const acha = sku => P.find(p => p.sku === sku);
   function atualizar(rec) { const i = P.findIndex(p => p.sku === rec.sku); if (i < 0) P.push(rec); else P[i] = rec; pnChips(); pnRender(); }
 
@@ -186,7 +197,7 @@
   }
   function abrirEd(sku) {
     const novo = !sku;
-    const p = novo ? { n: "", b: "", s: "", c: LOJAS[LOJA].cats[0], g: "", p: 0, d: "", h: false, sku: "" } : acha(sku);
+    const p = novo ? { n: "", b: "", s: "", c: LOJAS[LOJA].cats[0], g: "", p: 0, d: "", h: false, e: true, sku: "" } : acha(sku);
     edSku = novo ? null : sku;
     $("ed-c").innerHTML = LOJAS[LOJA].cats.map(c => `<option>${esc(c)}</option>`).join("");
     if (!LOJAS[LOJA].cats.includes(p.c)) $("ed-c").insertAdjacentHTML("beforeend", `<option>${esc(p.c)}</option>`);
@@ -194,7 +205,7 @@
     $("ed-title").textContent = novo ? "Novo produto · " + NOME_LOJA[LOJA] : "Editar produto";
     $("ed-sku").textContent = novo ? "Depois de salvar, você poderá enviar a foto" : "Código " + p.sku;
     $("ed-n").value = p.n; $("ed-b").value = p.b; $("ed-s").value = p.s; $("ed-c").value = p.c; $("ed-g").value = p.g || "";
-    $("ed-p").value = p.p ? p.p.toFixed(2).replace(".", ",") : ""; $("ed-d").value = p.d || ""; $("ed-vis").checked = !p.h;
+    $("ed-p").value = p.p ? p.p.toFixed(2).replace(".", ",") : ""; $("ed-d").value = p.d || ""; $("ed-vis").checked = !p.h; $("ed-stk").checked = p.e !== false;
     err("ed-err"); $("ed-photo").hidden = novo;
     $("ed-del").hidden = novo || ME.papel !== "dono"; delArmado = false; $("ed-del").textContent = "Excluir produto";
     $("ed-ok").textContent = novo ? "Criar produto" : "Salvar";
@@ -210,7 +221,7 @@
     if (!nome) return err("ed-err", "Digite o nome do produto.");
     if (raw && (!isFinite(preco) || preco < 0)) return err("ed-err", 'Preço inválido. Use o formato 89,90 ou deixe vazio para "Sob consulta".');
     const row = { nome, marca: $("ed-b").value.trim(), tamanho: $("ed-s").value.trim(), categoria: $("ed-c").value,
-      publico: $("ed-g").value, preco: Math.round(preco * 100) / 100, descricao: $("ed-d").value.trim(), visivel: $("ed-vis").checked };
+      publico: $("ed-g").value, preco: Math.round(preco * 100) / 100, descricao: $("ed-d").value.trim(), visivel: $("ed-vis").checked, em_estoque: $("ed-stk").checked };
     busy($("ed-ok"), true, "Salvando…");
     let res;
     if (edSku) res = await sb.from("catalogo_produtos").update(row).eq("loja", LOJA).eq("sku", edSku).select().single();
