@@ -341,6 +341,7 @@
         <div class="eq-ctrl">
           <label class="chk"><input type="checkbox" data-loja="hara" ${m.lojas.includes("hara") ? "checked" : ""}><span>Harã</span></label>
           <label class="chk"><input type="checkbox" data-loja="mix" ${m.lojas.includes("mix") ? "checked" : ""}><span>Harã Mix</span></label>
+          <button class="cr-ghost sm" data-senha="1">Nova senha</button>
           <button class="${m.ativo ? "rm" : "cr-ghost"} sm" data-ativo="${m.ativo ? "0" : "1"}">${m.ativo ? "Bloquear acesso" : "Liberar acesso"}</button>
         </div>`}
       </li>`;
@@ -355,6 +356,21 @@
     toast("Lojas atualizadas.", true);
   });
   $("eq-list").addEventListener("click", async e => {
+    const ns = e.target.closest("[data-senha]");
+    if (ns) {
+      const li = ns.closest("[data-uid]"), nome = li.querySelector(".eq-who b").textContent, email = li.querySelector(".eq-who small").textContent;
+      const al = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789", v = new Uint32Array(8); crypto.getRandomValues(v);
+      const senha = "Hara-" + Array.from(v, n => al[n % al.length]).join("");
+      busy(ns, true, "…");
+      const { error } = await sb.rpc("catalogo_redefinir_senha", { p_user_id: li.dataset.uid, p_senha: senha });
+      busy(ns, false);
+      if (error) return toast(traduz(error));
+      let box = li.querySelector(".ok-box"); if (!box) { box = document.createElement("div"); box.className = "ok-box eq-pw"; li.append(box); }
+      box.hidden = false;
+      box.innerHTML = `Senha nova de <b>${esc(nome)}</b>: <code>${esc(senha)}</code><br><button type="button" class="cr-ghost sm">Copiar mensagem</button>`;
+      box.querySelector("button").onclick = () => navigator.clipboard.writeText(`Oi, ${nome}! Sua senha nova do painel Harã:\n${location.origin + location.pathname}\nE-mail: ${email}\nSenha: ${senha}\nDepois de entrar, troque em "Trocar senha".`).then(() => toast("Mensagem copiada.", true), () => toast("Não deu para copiar. Selecione o texto."));
+      return;
+    }
     const b = e.target.closest("[data-ativo]"); if (!b) return;
     const li = b.closest("[data-uid]"); busy(b, true, "…");
     const { error } = await sb.from("catalogo_equipe").update({ ativo: b.dataset.ativo === "1" }).eq("user_id", li.dataset.uid);
@@ -372,15 +388,10 @@
     if (!lojas.length) return err("mb-err", "Marque pelo menos uma loja.");
     busy($("mb-btn"), true, "Criando…");
     try {
-      // cliente separado: cria o login da funcionária sem desconectar você
-      const tmp = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey,
-        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, storageKey: "hara-tmp" } });
-      const su = await tmp.auth.signUp({ email, password: senha, options: { data: { nome } } });
-      if (su.error && !/already registered|already been registered|exists/i.test(su.error.message)) throw su.error;
-      const jaExistia = !!su.error || (su.data.user && Array.isArray(su.data.user.identities) && su.data.user.identities.length === 0);
-      const precisaConfirmar = !su.error && !su.data.session && !jaExistia;
-      const { error } = await sb.rpc("catalogo_adicionar_membro", { p_email: email, p_nome: nome, p_lojas: lojas });
+      // o banco cria o login (já confirmado) e libera o acesso numa única chamada
+      const { data: res, error } = await sb.rpc("catalogo_criar_membro", { p_email: email, p_nome: nome, p_senha: senha, p_lojas: lojas });
       if (error) throw error;
+      const jaExistia = res === "existente", precisaConfirmar = false;
       const link = location.origin + location.pathname;
       $("mb-ok").innerHTML = jaExistia
         ? `<b>${esc(nome)}</b> já tinha login com este e-mail. O acesso ao catálogo foi liberado; a senha dela continua a mesma de antes.`

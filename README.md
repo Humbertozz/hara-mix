@@ -25,7 +25,7 @@ Funciona igual ao painel da Harã:
 - **Editar** nome, marca, tamanho, categoria, público, preço, descrição e se o produto aparece no catálogo. Tudo é salvo na hora.
 - **Enviar foto** com enquadramento. A foto sai sempre quadrada, em 1000 × 1000 px.
 - **+ Novo produto**, filtros (Sem foto, Com foto, Ocultos, Sem preço) e **Excluir**, este só para o dono.
-- A aba **Equipe** é a mesma dos dois sites. Para entrar neste painel, a funcionária precisa estar liberada para a **Harã Mix**.
+- A aba **Equipe** é a mesma dos dois sites. Lá você cria o acesso, gera uma **Nova senha** quando alguém esquecer e bloqueia o acesso. Para entrar neste painel, a funcionária precisa estar liberada para a **Harã Mix**.
 
 ## Observações
 
