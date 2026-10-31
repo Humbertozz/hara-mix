@@ -13,8 +13,8 @@ window.CONFIG = {
   loja: "mix",
   catalogoUrl: "../",
 
-  supabaseUrl: "https://SEU-PROJETO.supabase.co",
-  supabaseAnonKey: "COLE-AQUI-A-CHAVE-ANON",
+  supabaseUrl: "https://eujbnvnkrbkxlkfiuapq.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1amJudm5rcmJreGxrZml1YXBxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MjkwODIsImV4cCI6MjEwOTAwNTA4Mn0.MDq1d1lF4SBGe_HlqpGODbYW03POZaNOLEWCD-PGlR4",
 
   // Vendedoras que aparecem nos botões "Pedir com" dos catálogos
   // (a página de links inicial tem os números escritos direto no index.html)
